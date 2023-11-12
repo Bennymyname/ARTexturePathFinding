@@ -1,0 +1,72 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1001 &8111876038554503835
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 7144254359861114104, guid: dcce73c8c1d08bc4ebef8c53e5c4d994, type: 3}
+      propertyPath: m_text
+      value: Stage Complete
+      objectReference: {fileID: 0}
+    - target: {fileID: 7144254359975392764, guid: dcce73c8c1d08bc4ebef8c53e5c4d994, type: 3}
+      propertyPath: m_RootOrder
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7144254359975392764, guid: dcce73c8c1d08bc4ebef8c53e5c4d994, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -7.89
+      objectReference: {fileID: 0}
+    - target: {fileID: 7144254359975392764, guid: dcce73c8c1d08bc4ebef8c53e5c4d994, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -2.8968
+      objectReference: {fileID: 0}
+    - target: {fileID: 7144254359975392764, guid: dcce73c8c1d08bc4ebef8c53e5c4d994, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -7.02
+      objectReference: {fileID: 0}
+    - target: {fileID: 7144254359975392764, guid: dcce73c8c1d08bc4ebef8c53e5c4d994, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7144254359975392764, guid: dcce73c8c1d08bc4ebef8c53e5c4d994, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7144254359975392764, guid: dcce73c8c1d08bc4ebef8c53e5c4d994, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7144254359975392764, guid: dcce73c8c1d08bc4ebef8c53e5c4d994, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7144254359975392764, guid: dcce73c8c1d08bc4ebef8c53e5c4d994, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7144254359975392764, guid: dcce73c8c1d08bc4ebef8c53e5c4d994, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7144254359975392764, guid: dcce73c8c1d08bc4ebef8c53e5c4d994, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7144254359975392765, guid: dcce73c8c1d08bc4ebef8c53e5c4d994, type: 3}
+      propertyPath: m_Name
+      value: Cube (118)
+      objectReference: {fileID: 0}
+    - target: {fileID: 7144254361467144848, guid: dcce73c8c1d08bc4ebef8c53e5c4d994, type: 3}
+      propertyPath: m_text
+      value: '
+
+
+
+        You can now move on to the next stage. Please wait for
+        instructions on which stage to select. '
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: dcce73c8c1d08bc4ebef8c53e5c4d994, type: 3}
