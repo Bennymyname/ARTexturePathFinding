@@ -2,6 +2,9 @@
 English:
 (This game was used for an instructor to monitor the player's gameplay and conduct research surveys.) 
 
+If you want to see Unity resources, open "TexturePathFinding" folder.
+If you want to play the game, open "TexturePathFinding MainGame" folder, and run "TexturePathFinding.exe"
+
 How to play:
 
 MOUSE - to look around
@@ -31,6 +34,9 @@ Right click (2 fingers click on trackpad) on the TexturePathFinding app, click S
 
 日本語：
 (このゲームは、指導者がプレイヤーのプレイを見守って、研究のためのアンケートを行ったりするために使用されました。)
+
+Unityのリソースを見たければ、"TexturePathFinding"というフォルダーを開いてください。
+ゲームをプレイしたければ、"TexturePathFinding MainGame"というフォルダーを開き、"TexturePathFinding.exe"を実行してください。
 
 やり方：
 
