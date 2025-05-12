@@ -21,7 +21,7 @@ EditorBuildSettings:
     path: Assets/Scenes/MainStages/#1Defaulttile.unity
     guid: 098e181361c500c41a875a8e3e139f38
   - enabled: 1
-    path: Assets/Scenes/MainStages/#2Stage4H.unity
+    path: Assets/Scenes/MainStages/RGBtile.unity
     guid: b0f636f05ff8b4b0b90ad0715dd9f51f
   - enabled: 1
     path: Assets/Scenes/MainStages/#2Stage5M.unity
