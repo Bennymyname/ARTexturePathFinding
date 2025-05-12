@@ -18,7 +18,7 @@ EditorBuildSettings:
     path: Assets/Scenes/MainStages/#1Stage2M.unity
     guid: f929bd38a77721f4294e6793de954a4c
   - enabled: 1
-    path: Assets/Scenes/MainStages/#1Stage3L.unity
+    path: Assets/Scenes/MainStages/#1Defaulttile.unity
     guid: 098e181361c500c41a875a8e3e139f38
   - enabled: 1
     path: Assets/Scenes/MainStages/#2Stage4H.unity
