@@ -1,0 +1,82 @@
+import cv2
+import numpy as np
+import matplotlib.pyplot as plt
+import os
+from scipy.stats import skew, kurtosis
+
+# Set image folder
+img_folder = "/Users/benny/Desktop/Graduation Research/NormalContrast/img"
+
+# Filter Topdown_ images
+supported_exts = (".png", ".jpg", ".jpeg", ".bmp", ".tiff")
+image_files = [
+    f for f in os.listdir(img_folder)
+    if f.startswith("Topdown_") and f.lower().endswith(supported_exts)
+]
+image_files.sort()
+
+if not image_files:
+    raise FileNotFoundError("No images starting with 'Topdown_' found.")
+
+# Precalculate max histogram count for y-axis unification
+hist_max = 0
+grayscales = []
+
+for fname in image_files:
+    path = os.path.join(img_folder, fname)
+    img_bgr = cv2.imread(path, cv2.IMREAD_UNCHANGED)
+    if img_bgr is None:
+        continue
+    if img_bgr.dtype == np.uint16:
+        img_bgr = (img_bgr / 256).astype(np.uint8)
+    gray = cv2.cvtColor(img_bgr, cv2.COLOR_BGR2GRAY).astype(np.float32)
+    grayscales.append((fname, gray, img_bgr))
+    hist, _ = np.histogram(gray, bins=256, range=(0, 255))
+    hist_max = max(hist_max, hist.max())
+
+# Setup plot layout
+n = len(grayscales)
+fig, axes = plt.subplots(2, n, figsize=(5 * n, 9), gridspec_kw={'height_ratios': [2, 3]})
+if n == 1:
+    axes = np.expand_dims(axes, axis=1)
+
+# Plotting
+for i, (fname, gray, img_bgr) in enumerate(grayscales):
+    rgb = cv2.cvtColor(img_bgr, cv2.COLOR_BGR2RGB)
+    hist, bins = np.histogram(gray, bins=256, range=(0, 255))
+
+    # Stats
+    mean_lum = gray.mean()
+    std_lum = gray.std()
+    rms_contrast = std_lum / mean_lum if mean_lum > 0 else 0
+    var_lum = np.var(gray)
+    skewness = skew(gray.ravel())
+    kurt = kurtosis(gray.ravel())
+
+    # Plot histogram
+    ax_hist = axes[0, i]
+    ax_hist.plot(bins[:-1], hist, color='darkblue', linewidth=1.5)
+    ax_hist.set_ylim(0, hist_max * 1.05)
+    ax_hist.set_title(f"{fname}", fontsize=10)
+    ax_hist.set_xlabel("Pixel Luminance (0–255)")
+    ax_hist.set_ylabel("Pixel Count")
+    ax_hist.grid(True)
+
+    # Add text block with stats
+    ax_hist.text(
+        0.02, 0.97,
+        f"RMS: {rms_contrast:.4f}\nVar: {var_lum:.2f}\nSkew: {skewness:.2f}\nKurt: {kurt:.2f}",
+        transform=ax_hist.transAxes,
+        fontsize=9,
+        verticalalignment='top',
+        bbox=dict(boxstyle="round,pad=0.3", fc="lightyellow", ec="black", alpha=0.8)
+    )
+
+    # Plot original image
+    ax_img = axes[1, i]
+    ax_img.imshow(rgb)
+    ax_img.set_title("Original Image", fontsize=10)
+    ax_img.axis("off")
+
+plt.tight_layout()
+plt.show()

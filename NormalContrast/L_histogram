@@ -1,0 +1,17 @@
+import cv2
+import matplotlib.pyplot as plt
+
+# Read the image
+image = cv2.imread('img/Normal_bricks094.png', cv2.IMREAD_GRAYSCALE)
+
+# Calculate the histogram
+hist = cv2.calcHist([image], [0], None, [256], [0, 256])
+
+# Plot the histogram
+plt.figure()
+plt.title("Grayscale Histogram")
+plt.xlabel("Bins")
+plt.ylabel("# of Pixels")
+plt.plot(hist)
+plt.xlim([0, 256])
+plt.show()
