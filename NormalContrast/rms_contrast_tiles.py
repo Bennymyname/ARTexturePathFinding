@@ -5,8 +5,8 @@ import matplotlib.pyplot as plt
 from scipy.stats import skew, kurtosis
 
 # === CONFIGURATION ===
-process_all_folders = True
-target_folder = ["Topdown_Bricks", "Topdown_PavingStones"]
+process_all_folders = False
+target_folder = ["Topdown_Bricks"]
 base_dir = "NormalContrast/img"
 sort_by = "Skewness"  # Options: 'Kurtosis', 'RMS_Contrast', 'Variance', 'Skewness'
 
