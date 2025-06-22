@@ -7,7 +7,7 @@ from scipy.stats import skew, kurtosis
 
 # === CONFIGURATION ===
 process_all_folders = False
-target_folder = ["Topdown_Fabric"]
+target_folder = ["Topdown_Bricks"]
 images_per_page = 4  # Max images per figure
 cols_per_page = 4    # Layout: 4 columns per page
 
