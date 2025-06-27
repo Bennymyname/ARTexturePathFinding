@@ -1,73 +1,59 @@
 import os
 import cv2
 import numpy as np
+import re
 import matplotlib.pyplot as plt
-from scipy.stats import skew, kurtosis
+import mplcursors  # For hover interaction
 
 # === CONFIGURATION ===
-process_all_folders = False
-target_folder = ["Topdown_Bricks"]
-base_dir = "NormalContrast/img"
-sort_by = "Skewness"  # Options: 'Kurtosis', 'RMS_Contrast', 'Variance', 'Skewness'
+image_folder = "Ground080TrilinearRepeat_cropped"
 
-# === LOAD IMAGES & CALCULATE STATS ===
-valid_exts = ('.png', '.jpg', '.jpeg', '.bmp', '.tiff')
-folders_to_process = (
-    [f for f in os.listdir(base_dir)
-     if os.path.isdir(os.path.join(base_dir, f)) and f.startswith("Topdown_")]
-    if process_all_folders else target_folder
-)
+# === HELPER FUNCTION ===
+def extract_resolution(filename):
+    match = re.search(r'_(\d+)px', filename)
+    return int(match.group(1)) if match else -1
 
+# === MAIN SCRIPT ===
 results = []
-for folder in folders_to_process:
-    folder_path = os.path.join(base_dir, folder)
-    for fname in sorted(os.listdir(folder_path)):
-        if fname.startswith("Topdown_") and fname.lower().endswith(valid_exts):
-            path = os.path.join(folder_path, fname)
-            img_bgr = cv2.imread(path, cv2.IMREAD_UNCHANGED)
-            if img_bgr is None:
-                continue
-            if img_bgr.dtype == np.uint16:
-                img_bgr = (img_bgr / 256).astype(np.uint8)
-            gray = cv2.cvtColor(img_bgr, cv2.COLOR_BGR2GRAY).astype(np.float32)
-            mean = gray.mean()
-            std = gray.std()
-            rms = std / mean if mean > 0 else 0
-            var = np.var(gray)
-            sk = skew(gray.ravel())
-            kurt_val = kurtosis(gray.ravel())
-            results.append({
-                "Folder": folder,
-                "Filename": fname,
-                "RMS_Contrast": rms,
-                "Variance": var,
-                "Skewness": sk,
-                "Kurtosis": kurt_val,
-                "RGB": cv2.cvtColor(img_bgr, cv2.COLOR_BGR2RGB)
-            })
 
-# === SORTING & DISPLAYING ===
-results.sort(key=lambda x: x[sort_by], reverse=True)
-top5 = results[:5]
-bottom5 = results[-5:]
+for filename in sorted(os.listdir(image_folder), key=extract_resolution):
+    if filename.lower().endswith(('.png', '.jpg', '.jpeg', '.bmp')):
+        path = os.path.join(image_folder, filename)
+        img = cv2.imread(path, cv2.IMREAD_UNCHANGED)
+        if img is None:
+            print(f"⚠️ Skipping unreadable: {filename}")
+            continue
+        if img.dtype == np.uint16:
+            img = (img / 256).astype(np.uint8)
+        gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY).astype(np.float32)
+        mean = gray.mean()
+        std = gray.std()
+        rms = std / mean if mean > 0 else 0
+        resolution = extract_resolution(filename)
+        results.append((resolution, rms))
 
-# === PRINT FULL TABLE TO TERMINAL ===
-print(f"\nSorted by {sort_by}:\n")
-print(f"{'Index':<5} {'Filename':<30} {'RMS':>8} {'Var':>10} {'Skew':>10} {'Kurtosis':>10}")
-print("-" * 75)
-for i, r in enumerate(results):
-    print(f"{i+1:<5} {r['Filename']:<30} {r['RMS_Contrast']:.4f} {r['Variance']:>10.2f} "
-          f"{r['Skewness']:>10.2f} {r['Kurtosis']:>10.2f}")
+# === SORT AND DISPLAY ===
+results.sort()
+print(f"\n{'Filename':<15}  {'Resolution':<12}  {'RMS_Contrast'}")
+print("-" * 45)
+for res, rms in results:
+    print(f"{f'{res}px':<15}  {res:<12}  {rms:.6f}")
 
-# === PLOT IMAGES (TOP 5 + BOTTOM 5) ===
-fig, axes = plt.subplots(2, 5, figsize=(20, 5))
-combined = top5 + bottom5
+# === PLOT ===
+resolutions = [r[0] for r in results]
+rms_values = [r[1] for r in results]
 
-for ax, r in zip(axes.flatten(), combined):
-    ax.imshow(r["RGB"])
-    ax.set_title(f"{r['Filename']}\n{sort_by}: {r[sort_by]:.2f}", fontsize=9)
-    ax.axis("off")
+fig, ax = plt.subplots(figsize=(10, 5))
+line, = ax.plot(resolutions, rms_values, marker='o', linestyle='-', color='blue')
 
-plt.suptitle(f"Top 5 and Bottom 5 Images by {sort_by}", fontsize=14)
-plt.tight_layout(rect=[0, 0, 1, 0.92])
+# Hover tooltip
+cursor = mplcursors.cursor(line, hover=True)
+cursor.connect("add", lambda sel: sel.annotation.set_text(
+    f"Resolution: {resolutions[sel.index]}px\nCrms: {rms_values[sel.index]:.4f}"))
+
+ax.set_title("RMS Contrast vs Resolution (Hover to Inspect)")
+ax.set_xlabel("Resolution (px)")
+ax.set_ylabel("RMS Contrast (Crms)")
+ax.grid(True)
+plt.tight_layout()
 plt.show()
