@@ -3,10 +3,11 @@ import cv2
 import numpy as np
 
 # === CONFIGURATION ===
-source_dir = "2AFC/2AFC_Tester/Ground080TrilinearRepeat"
-save_dir = "Ground080TrilinearRepeat_cropped"
-gradient_threshold_ratio = 0.4     # Stronger sensitivity
-inward_margin_px = 10              # Additional trim from both sides
+source_dir = "2AFC/2AFC_Tester/Fabric065levels"
+save_dir = "Fabric065TrilinearRepeat_cropped"
+reference_image = "Fabric065Normal_1024px.png"  # <-- reference for cropping
+gradient_threshold_ratio = 0.4
+inward_margin_px = 10
 preview_first = True
 
 os.makedirs(save_dir, exist_ok=True)
@@ -23,9 +24,27 @@ def detect_crop_bounds(gray_img, threshold_ratio=0.4, margin=10):
     right = min(gray_img.shape[1], active_cols[-1] - margin)
     return left, right
 
-# === PROCESSING LOOP ===
-crop_bounds = None
-for i, fname in enumerate(sorted(os.listdir(source_dir))):
+# === Load and detect bounds from reference image ===
+ref_path = os.path.join(source_dir, reference_image)
+ref_img = cv2.imread(ref_path)
+if ref_img is None:
+    raise FileNotFoundError(f"❌ Reference image not found: {reference_image}")
+
+ref_gray = cv2.cvtColor(ref_img, cv2.COLOR_BGR2GRAY)
+crop_bounds = detect_crop_bounds(ref_gray, threshold_ratio=gradient_threshold_ratio, margin=inward_margin_px)
+left, right = crop_bounds
+
+print(f"✅ Detected crop bounds from reference: columns {left} to {right}")
+
+if preview_first:
+    preview = ref_img[:, left:right]
+    cv2.imshow("📷 Preview Cropped Reference", preview)
+    print("🔍 Close preview to continue cropping all images...")
+    cv2.waitKey(0)
+    cv2.destroyAllWindows()
+
+# === PROCESS ALL IMAGES ===
+for fname in sorted(os.listdir(source_dir)):
     if not fname.lower().endswith(('.png', '.jpg', '.jpeg')):
         continue
 
@@ -35,25 +54,6 @@ for i, fname in enumerate(sorted(os.listdir(source_dir))):
         print(f"⚠️ Skipping unreadable: {fname}")
         continue
 
-    gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
-
-    if crop_bounds is None:
-        try:
-            crop_bounds = detect_crop_bounds(gray, threshold_ratio=gradient_threshold_ratio, margin=inward_margin_px)
-        except ValueError as e:
-            print(f"❌ Failed on {fname}: {e}")
-            break
-
-        print(f"✅ Detected bounds: columns {crop_bounds[0]} to {crop_bounds[1]}")
-        if preview_first:
-            preview = img[:, crop_bounds[0]:crop_bounds[1]]
-            cv2.imshow("Preview Cropped Image", preview)
-            print("🔍 Close preview to continue...")
-            cv2.waitKey(0)
-            cv2.destroyAllWindows()
-
-    # Apply cropping
-    left, right = crop_bounds
     cropped = img[:, left:right]
     save_path = os.path.join(save_dir, fname)
     cv2.imwrite(save_path, cropped)

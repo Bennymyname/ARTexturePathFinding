@@ -6,7 +6,7 @@ import matplotlib.pyplot as plt
 import mplcursors  # For hover interaction
 
 # === CONFIGURATION ===
-image_folder = "Ground080TrilinearRepeat_cropped"
+image_folder = "Fabric065TrilinearRepeat_cropped"
 
 # === HELPER FUNCTION ===
 def extract_resolution(filename):

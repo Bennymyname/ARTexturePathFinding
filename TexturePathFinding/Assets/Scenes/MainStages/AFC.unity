@@ -536,4 +536,4 @@ MonoBehaviour:
   captureCamera: {fileID: 978640276}
   targetObject: {fileID: 554252471}
   normalMapFolder: NormalMaps
-  saveFolder: Bricks092levels
+  saveFolder: Fabric061levels
