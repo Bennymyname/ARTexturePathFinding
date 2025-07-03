@@ -5,8 +5,8 @@ import re
 import matplotlib.pyplot as plt
 
 # === CONFIGURATION ===
-normal_map_folder = "/Users/benny/Documents/GitHub/ARTexturePathFinding/Bricks092Normals_OUT/equalised"
-crms_image_folder = "/Users/benny/Documents/GitHub/ARTexturePathFinding/NormalizedBricks092_cropped"
+normal_map_folder = "/Users/benny/Documents/GitHub/ARTexturePathFinding/Bricks092Normals"
+crms_image_folder = "/Users/benny/Documents/GitHub/ARTexturePathFinding/Bricks092TrilinearRepeat_equalised"
 
 # === HELPER FUNCTIONS ===
 def extract_resolution(filename):
