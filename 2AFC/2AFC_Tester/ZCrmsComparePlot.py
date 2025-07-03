@@ -5,8 +5,8 @@ import re
 import matplotlib.pyplot as plt
 
 # === CONFIGURATION ===
-normal_map_folder = "Ground080Normals"
-crms_image_folder = "Ground080TrilinearRepeat_cropped"
+normal_map_folder = "/Users/benny/Documents/GitHub/ARTexturePathFinding/Bricks092Normals_OUT/equalised"
+crms_image_folder = "/Users/benny/Documents/GitHub/ARTexturePathFinding/NormalizedBricks092_cropped"
 
 # === HELPER FUNCTIONS ===
 def extract_resolution(filename):

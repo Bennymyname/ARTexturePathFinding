@@ -3,9 +3,9 @@ import cv2
 import numpy as np
 
 # === CONFIGURATION ===
-source_dir = "2AFC/2AFC_Tester/Fabric065levels"
-save_dir = "Fabric065TrilinearRepeat_cropped"
-reference_image = "Fabric065Normal_1024px.png"  # <-- reference for cropping
+source_dir = "2AFC/2AFC_Tester/NormalizedBricks092"
+save_dir = "NormalizedBricks092_cropped"
+reference_image = "Bricks092Normal_1024px.png"  # <-- reference for cropping
 gradient_threshold_ratio = 0.4
 inward_margin_px = 10
 preview_first = True
